@@ -100,7 +100,8 @@ public class FtpUtil {
                 out = resp.getOutputStream();
                 //路径为空时取配置文件的路径
                 String newPath = StringUtils.isBlank(path) ? ftp.getWorkDirectory():path;
-                ftpClient.retrieveFile( newPath+ "/" + fileName, out);
+                String conPath = newPath + "/" + fileName;
+                ftpClient.retrieveFile( conPath, out);
             } catch (IOException e) {
                 log.error("下载失败：");
             } finally {
