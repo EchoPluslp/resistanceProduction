@@ -18,7 +18,7 @@ public class LoginController {
     userServiceImpl userService;
 
     @RequestMapping("/login")
-    public Result login(UserLogin user) {
+    public Result login(@RequestBody  UserLogin user) {
         User loginUser  = new User(user.getUserName(),user.getPassWord());
         User userContext  = userService.getUserByNameAndPassword(loginUser);
         if (userContext == null){

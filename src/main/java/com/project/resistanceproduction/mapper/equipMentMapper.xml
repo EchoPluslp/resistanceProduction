@@ -9,7 +9,7 @@
            type as type,
            status as status,
            introduce as descriptionInfo,
-           name as equipMentName
+           name as name
         from equipment
 
 

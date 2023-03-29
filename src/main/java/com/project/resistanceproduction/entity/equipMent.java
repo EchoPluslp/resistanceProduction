@@ -12,7 +12,7 @@ public class equipMent {
 
     public String descriptionInfo;
 
-    public String equipMentName;
+    public String name;
 
     public String statusInfo;
 }
