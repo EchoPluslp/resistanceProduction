@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 
 @Data
 @Component
-@ConfigurationProperties()
 public class FtpConfigProperties {
     // 连接超时时间设置
     private static final int timeout = 1000*30;
@@ -212,6 +211,7 @@ public class FtpConfigProperties {
             ftpClient.changeWorkingDirectory(serviceDec);
             ftpClient.storeFile(fileName, inputStream);
             inputStream.close();
+
             ftpClient.logout();
             System.out.println("上传文件成功");
 

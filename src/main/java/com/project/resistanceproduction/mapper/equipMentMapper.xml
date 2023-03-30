@@ -9,7 +9,9 @@
            type as type,
            status as status,
            introduce as descriptionInfo,
-           name as name
+           name as name,
+           ftpInfostatus as ftpInfostatus
+
         from equipment
 
 
@@ -20,4 +22,12 @@
         from equipment
     </select>
 
+    <select id="readEquipmentInfoByid"   resultType="Integer" parameterType = "Integer">
+        select ftpInfostatus
+        from equipment where id = #{id}
+    </select>
+
+    <insert id="insertData"    parameterType = "com.project.resistanceproduction.entity.fileInfoItem">
+        insert into fileinfo(filename,date,fetchtime,type,equipmentid) values (#{fileInfoItem.fileName}, #{fileInfoItem.date}, #{fileInfoItem.fetchTime},#{fileInfoItem.type},#{fileInfoItem.equipMentId})
+    </insert>
 </mapper>

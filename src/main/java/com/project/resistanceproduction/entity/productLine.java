@@ -3,7 +3,7 @@ package com.project.resistanceproduction.entity;
 import lombok.Data;
 
 @Data
-public class equipMent {
+public class productLine {
     public  Integer id;
 
     public Integer type;
@@ -15,6 +15,4 @@ public class equipMent {
     public String name;
 
     public String statusInfo;
-
-    public Integer ftpInfostatus;
 }

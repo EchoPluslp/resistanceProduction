@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.resistanceproduction.mapper.productLineMapper">
+
+    <select id="getProductLineList"   resultType="com.project.resistanceproduction.entity.productLine">
+    select id as id ,
+           type as type,
+           status as status,
+           introduce as descriptionInfo,
+           name as name
+        from productline
+
+
+    </select>
+
+    <select id="getProductLineCount"   resultType="Integer">
+        select count(*)
+        from productline
+    </select>
+
+</mapper>
