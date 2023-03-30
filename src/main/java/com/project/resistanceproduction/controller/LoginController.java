@@ -24,6 +24,7 @@ public class LoginController {
         if (userContext == null){
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.USER_NOT_EXIST.getMsg());
         }
+        userContext.setToken("admin-token");
     return RUtils.success(userContext);
     }
 }

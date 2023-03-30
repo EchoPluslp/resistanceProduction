@@ -8,6 +8,8 @@ public class User {
 
     private String password;
 
+    private String token;
+
     public User(String userName, String passWord) {
         this.username = userName;
         this.password = passWord;
