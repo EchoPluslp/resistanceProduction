@@ -168,7 +168,7 @@ public class equipMentController {
     }
 
     @RequestMapping("/getEquipmentfileName")
-    public Result getEquipmentInfo( equipMentItemInfo equipmentInfo){
+    public Result getEquipmentInfo( EquipmentItemInfo equipmentInfo){
         //根据设备id,良次品,起止时间,获取图片路径
         List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
         return RUtils.success(fileNameList);

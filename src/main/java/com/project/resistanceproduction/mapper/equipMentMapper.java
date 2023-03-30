@@ -1,5 +1,6 @@
 package com.project.resistanceproduction.mapper;
 
+import com.project.resistanceproduction.entity.EquipmentItemInfo;
 import com.project.resistanceproduction.entity.equipMent;
 import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
@@ -20,6 +21,6 @@ public interface equipMentMapper {
 
     Integer insertData(@Param("fileInfoItem") fileInfoItem fileInfoItem);
 
-    List<String> getEquipFileName(@Param("equipmentInfo") equipMentItemInfo equipmentInfo);
+    List<String> getEquipFileName(@Param("equipmentInfo") EquipmentItemInfo equipmentInfo);
 
 }

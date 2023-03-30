@@ -2,6 +2,7 @@ package com.project.resistanceproduction.service.impl;
 
 
 import com.github.pagehelper.PageHelper;
+import com.project.resistanceproduction.entity.EquipmentItemInfo;
 import com.project.resistanceproduction.entity.PageParam;
 import com.project.resistanceproduction.entity.equipMent;
 import com.project.resistanceproduction.entity.equipMentItemInfo;
@@ -64,7 +65,7 @@ public class equipMentServiceImpl  implements equipMentService {
     }
 
     @Override
-    public List<String> getEquipMentInfoList(equipMentItemInfo equipmentInfo) {
+    public List<String> getEquipMentInfoList(EquipmentItemInfo equipmentInfo) {
        return equipMentMapper.getEquipFileName(equipmentInfo);
     }
 }

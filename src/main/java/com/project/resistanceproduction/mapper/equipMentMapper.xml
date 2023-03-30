@@ -31,8 +31,8 @@
         insert into fileinfo(filename,date,fetchtime,type,equipmentid) values (#{fileInfoItem.fileName}, #{fileInfoItem.date}, #{fileInfoItem.fetchTime},#{fileInfoItem.type},#{fileInfoItem.equipMentId})
     </insert>
 
-    <select id="getEquipFileName" resultType="java.lang.String"  parameterType = "com.project.resistanceproduction.entity.equipMentItemInfo">
-        select filename from fileinfo where fileinfo.type = #{equipmentInfo.type} and fileinfo.equipmentid = #{equipmentInfo.equipMentId}
+    <select id="getEquipFileName" resultType="java.lang.String"  parameterType = "com.project.resistanceproduction.entity.EquipmentItemInfo">
+        select filename from fileinfo where fileinfo.type = #{equipmentInfo.type} and fileinfo.equipmentid = #{equipmentInfo.id}
                 and fileinfo.fetchtime between #{equipmentInfo.startTime} and #{equipmentInfo.endTime}
         </select>
 </mapper>

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class equipMentItemInfo {
-    private Integer equipMentId;
+public class EquipmentItemInfo {
+    private Integer id;
     private Integer type;
     private String startTime;
     private String endTime;
