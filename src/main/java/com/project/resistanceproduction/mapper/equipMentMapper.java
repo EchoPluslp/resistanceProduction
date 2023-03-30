@@ -1,6 +1,7 @@
 package com.project.resistanceproduction.mapper;
 
 import com.project.resistanceproduction.entity.equipMent;
+import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,9 +16,10 @@ public interface equipMentMapper {
 
     Integer getEquipMentListCount();
 
-    Integer readEquipmentInfoByid(@Param("id") Integer id);
+    equipMent readEquipmentInfoByid(@Param("id") Integer id);
 
     Integer insertData(@Param("fileInfoItem") fileInfoItem fileInfoItem);
 
+    List<String> getEquipFileName(@Param("equipmentInfo") equipMentItemInfo equipmentInfo);
 
 }

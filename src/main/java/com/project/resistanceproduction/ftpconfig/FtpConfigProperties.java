@@ -24,7 +24,7 @@ public class FtpConfigProperties {
     // 连接超时时间设置
     private static final int timeout = 1000*30;
     // ftp 服务地址
-    private String host = "192.168.1.105";
+    private String host = "172.20.10.5";
     // ftp 服务账户
     private String userName = "admin";
     // ftp 密码

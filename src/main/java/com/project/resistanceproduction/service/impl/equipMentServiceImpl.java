@@ -4,6 +4,7 @@ package com.project.resistanceproduction.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.project.resistanceproduction.entity.PageParam;
 import com.project.resistanceproduction.entity.equipMent;
+import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
 import com.project.resistanceproduction.mapper.equipMentMapper;
 import com.project.resistanceproduction.service.equipMentService;
@@ -38,7 +39,7 @@ public class equipMentServiceImpl  implements equipMentService {
     }
 
     @Override
-    public Integer readEquipmentInfoByid(Integer id) {
+    public equipMent readEquipmentInfoByid(Integer id) {
         return equipMentMapper.readEquipmentInfoByid(id);
     }
 
@@ -60,5 +61,10 @@ public class equipMentServiceImpl  implements equipMentService {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<String> getEquipMentInfoList(equipMentItemInfo equipmentInfo) {
+       return equipMentMapper.getEquipFileName(equipmentInfo);
     }
 }

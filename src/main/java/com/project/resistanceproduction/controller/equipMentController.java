@@ -58,18 +58,18 @@ public class equipMentController {
         return RUtils.success(listItem);
     }
 
-    @RequestMapping("/readEquipmentInfo")
+    @RequestMapping("/getEquipmentInfoById")
     public Result readEquipmentInfo(Integer id){
         if (id == null) {
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
 
         }
-        Integer fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
+        equipMent fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
         FTPInfoStatus ftpInfoStatus;
-        if (fTPInfoStatus  == 1){
-            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus,"已读取");
+        if (fTPInfoStatus.ftpInfostatus  == 1){
+            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus.getFtpInfostatus(),"已读取");
         }else{
-            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus,"未读取");
+            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus.getFtpInfostatus(),"未读取");
 
         }
         return RUtils.success(ftpInfoStatus);
@@ -77,11 +77,17 @@ public class equipMentController {
 
     //ftp获取文件
     //根据创建时间获取id
-    @RequestMapping("/getEquipmentInfo")
+    @RequestMapping("/readEquipmentInfo")
     public Result getEquipmentInfo(Integer id) throws IOException {
         if (id == null) {
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
         }
+        //通过id查找设备信息
+        equipMent fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
+        if (fTPInfoStatus == null){
+            return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+        }
+
         FTPClient ftpClient = ftpConfigProperties.connectFtp();
         FTPFile[] files = ftpClient.listDirectories();
 
@@ -138,11 +144,36 @@ public class equipMentController {
                    String infoDataPathName = infoDataList.get(count);
                    ftpConfigProperties.downloadFile(ftpClient,"/"+infoDataPath,infoDataPathName,"e:/dir/"+directoryName+"/info");
                }
+
+
                //插入数据
                equipMentServiceImpl.insertInfo(fileInfoItems);
-               break;
+
+               //设置已经完成17点之前的数据
+               fTPInfoStatus.setFtpInfostatus(1);
+
+               //设置在线状态
+               if (fTPInfoStatus.getStatus() == STATUS.ONLINE.getCode()){
+                   fTPInfoStatus.setStatusInfo(STATUS.ONLINE.getMsg());
+               }else if(fTPInfoStatus.getStatus() == STATUS.OFFLINE.getCode()){
+                   fTPInfoStatus.setStatusInfo(STATUS.OFFLINE.getMsg());
+               }else {
+                   fTPInfoStatus.setStatusInfo(STATUS.HITCH.getMsg());
+               }
+
+               return RUtils.success(fTPInfoStatus);
            }
         }
-        return RUtils.success(currentTime);
+        return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
     }
+
+    @RequestMapping("/getEquipmentfileName")
+    public Result getEquipmentInfo( equipMentItemInfo equipmentInfo){
+        //根据设备id,良次品,起止时间,获取图片路径
+        List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
+        return RUtils.success(fileNameList);
+
+    }
+
+
 }

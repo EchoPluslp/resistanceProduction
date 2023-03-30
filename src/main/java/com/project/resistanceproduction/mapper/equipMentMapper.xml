@@ -22,12 +22,17 @@
         from equipment
     </select>
 
-    <select id="readEquipmentInfoByid"   resultType="Integer" parameterType = "Integer">
-        select ftpInfostatus
+    <select id="readEquipmentInfoByid"    parameterType="Integer" resultType = "com.project.resistanceproduction.entity.equipMent">
+        select *
         from equipment where id = #{id}
     </select>
 
     <insert id="insertData"    parameterType = "com.project.resistanceproduction.entity.fileInfoItem">
         insert into fileinfo(filename,date,fetchtime,type,equipmentid) values (#{fileInfoItem.fileName}, #{fileInfoItem.date}, #{fileInfoItem.fetchTime},#{fileInfoItem.type},#{fileInfoItem.equipMentId})
     </insert>
+
+    <select id="getEquipFileName" resultType="java.lang.String"  parameterType = "com.project.resistanceproduction.entity.equipMentItemInfo">
+        select filename from fileinfo where fileinfo.type = #{equipmentInfo.type} and fileinfo.equipmentid = #{equipmentInfo.equipMentId}
+                and fileinfo.fetchtime between #{equipmentInfo.startTime} and #{equipmentInfo.endTime}
+        </select>
 </mapper>
