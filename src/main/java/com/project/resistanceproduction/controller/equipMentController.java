@@ -30,7 +30,6 @@ import static com.project.resistanceproduction.Utils.NGOK.OK;
 @RequestMapping("/main")
 public class equipMentController {
 
-
     @Autowired
     private equipMentService equipMentServiceImpl;
 
@@ -42,7 +41,6 @@ public class equipMentController {
     public Result getestEquipMentList(@RequestBody PageParam param){
 
         Integer equipMentListCount = equipMentServiceImpl.getEquipMentListCount();
-
 
         List<equipMent> equipMentList = equipMentServiceImpl.getEquipMentListByPage(param);
        //根据状态id判断是设备状态
@@ -59,7 +57,6 @@ public class equipMentController {
         returnListCount listItem = new returnListCount(equipMentListCount,equipMentList);
         return RUtils.success(listItem);
     }
-
 
     @RequestMapping("/readEquipmentInfo")
     public Result readEquipmentInfo(Integer id){
@@ -97,9 +94,6 @@ public class equipMentController {
 
         //用于保存到数据库中
         List<fileInfoItem> fileInfoItems = new ArrayList<>();
-        StopWatch stopWatch = new StopWatch();
-        //开始时间统计
-        stopWatch.start();
 
         //fpt服务器主文件名字
         //根据当前日期,获取指定目录下的时间.
@@ -121,6 +115,7 @@ public class equipMentController {
                         fileInfoItems.add(new fileInfoItem(id,NGPath+"/"+NGFileName,directoryName,createTime,NG.getCode()));
                     }
                }
+
                //进入OK文件
                String OKPath = directoryName+"/figure/OK";
                List<String>  okfileNameList = ftpConfigProperties.getFileNameList(ftpClient,OKPath);
@@ -145,21 +140,9 @@ public class equipMentController {
                }
                //插入数据
                equipMentServiceImpl.insertInfo(fileInfoItems);
-
                break;
            }
-
         }
-        //结束时间统计
-        stopWatch.stop();
-
-        //运行时间ns
-        System.out.println(stopWatch.getNanoTime());
-        //运行时间ms
-        System.out.println(stopWatch.getTime());
-
         return RUtils.success(currentTime);
-
     }
-
 }
