@@ -167,7 +167,7 @@ public class equipMentController {
         return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
     }
 
-    @RequestMapping("/getEquipmentfileName")
+    @RequestMapping("/getEquipmentImgList")
     public Result getEquipmentInfo( EquipmentItemInfo equipmentInfo){
         //根据设备id,良次品,起止时间,获取图片路径
         List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
