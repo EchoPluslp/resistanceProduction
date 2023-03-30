@@ -65,7 +65,7 @@ public class equipMentController {
 
         }
         equipMent fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
-        if (fTPInfoStatus.getFtpInfostatus()  == 1){
+        if (fTPInfoStatus.getFtpInfoStatus()  == 1){
             fTPInfoStatus.setFtpInfoStatusInfo("已读取");
         }else{
             fTPInfoStatus.setFtpInfoStatusInfo("未读取");
@@ -158,7 +158,7 @@ public class equipMentController {
                equipMentServiceImpl.insertInfo(fileInfoItems);
 
                //设置已经完成17点之前的数据
-               fTPInfoStatus.setFtpInfostatus(1);
+               fTPInfoStatus.setFtpInfoStatus(1);
 
                //设置在线状态
                if (fTPInfoStatus.getStatus() == STATUS.ONLINE.getCode()){

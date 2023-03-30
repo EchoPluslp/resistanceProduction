@@ -16,7 +16,7 @@ public class equipMent {
 
     public String statusInfo;
 
-    public Integer ftpInfostatus;
+    public Integer ftpInfoStatus;
 
     public String ftpInfoStatusInfo;
 }
