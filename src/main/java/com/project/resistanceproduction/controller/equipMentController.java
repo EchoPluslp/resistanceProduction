@@ -97,6 +97,9 @@ public class equipMentController {
         }
 
         FTPClient ftpClient = ftpConfigProperties.connectFtp();
+        if(ftpClient == null){
+            return RUtils.Err(Renum.CONNECT_ERROR.getCode(),Renum.CONNECT_ERROR.getMsg());
+        }
         FTPFile[] files = ftpClient.listDirectories();
 
         //获取当前日期
@@ -176,7 +179,7 @@ public class equipMentController {
     }
 
     @RequestMapping("/getEquipmentImgList")
-    public Result getEquipmentInfo( EquipmentItemInfo equipmentInfo){
+    public Result getEquipmentInfo(@RequestBody EquipmentItemInfo equipmentInfo){
         //根据设备id,良次品,起止时间,获取图片路径
         List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
         return RUtils.success(fileNameList);
