@@ -70,6 +70,16 @@ public class equipMentController {
         }else{
             fTPInfoStatus.setFtpInfoStatusInfo("未读取");
         }
+
+        //设置在线状态
+        if (fTPInfoStatus.getStatus() == STATUS.ONLINE.getCode()){
+            fTPInfoStatus.setStatusInfo(STATUS.ONLINE.getMsg());
+        }else if(fTPInfoStatus.getStatus() == STATUS.OFFLINE.getCode()){
+            fTPInfoStatus.setStatusInfo(STATUS.OFFLINE.getMsg());
+        }else {
+            fTPInfoStatus.setStatusInfo(STATUS.HITCH.getMsg());
+        }
+
         return RUtils.success(fTPInfoStatus);
     }
 
