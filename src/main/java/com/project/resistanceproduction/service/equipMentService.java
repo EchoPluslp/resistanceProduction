@@ -3,7 +3,6 @@ package com.project.resistanceproduction.service;
 import com.project.resistanceproduction.entity.EquipmentItemInfo;
 import com.project.resistanceproduction.entity.PageParam;
 import com.project.resistanceproduction.entity.equipMent;
-import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
 
 import java.util.List;

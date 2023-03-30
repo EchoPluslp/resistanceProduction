@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.project.resistanceproduction.entity.EquipmentItemInfo;
 import com.project.resistanceproduction.entity.PageParam;
 import com.project.resistanceproduction.entity.equipMent;
-import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
 import com.project.resistanceproduction.mapper.equipMentMapper;
 import com.project.resistanceproduction.service.equipMentService;

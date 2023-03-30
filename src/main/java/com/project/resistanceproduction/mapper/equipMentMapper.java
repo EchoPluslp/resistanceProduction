@@ -2,7 +2,6 @@ package com.project.resistanceproduction.mapper;
 
 import com.project.resistanceproduction.entity.EquipmentItemInfo;
 import com.project.resistanceproduction.entity.equipMent;
-import com.project.resistanceproduction.entity.equipMentItemInfo;
 import com.project.resistanceproduction.entity.fileInfoItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -1,5 +1,7 @@
 package com.project.resistanceproduction.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,10 +15,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfig  implements WebMvcConfigurer {
+    @Value("${filePath}")
+    String filePath;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // /images/**是静态映射， file:/root/images/是文件在服务器的路径
         registry.addResourceHandler("/images/**.*")
-                .addResourceLocations("file:D:\\img\\");
+                .addResourceLocations("file:"+filePath);
     }
 }
