@@ -65,14 +65,12 @@ public class equipMentController {
 
         }
         equipMent fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
-        FTPInfoStatus ftpInfoStatus;
-        if (fTPInfoStatus.ftpInfostatus  == 1){
-            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus.getFtpInfostatus(),"已读取");
+        if (fTPInfoStatus.getFtpInfostatus()  == 1){
+            fTPInfoStatus.setFtpInfoStatusInfo("已读取");
         }else{
-            ftpInfoStatus = new FTPInfoStatus(fTPInfoStatus.getFtpInfostatus(),"未读取");
-
+            fTPInfoStatus.setFtpInfoStatusInfo("未读取");
         }
-        return RUtils.success(ftpInfoStatus);
+        return RUtils.success(fTPInfoStatus);
     }
 
     //ftp获取文件

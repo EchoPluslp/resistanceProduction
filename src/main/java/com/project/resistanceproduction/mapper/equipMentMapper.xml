@@ -33,6 +33,6 @@
 
     <select id="getEquipFileName" resultType="java.lang.String"  parameterType = "com.project.resistanceproduction.entity.EquipmentItemInfo">
         select filename from fileinfo where fileinfo.type = #{equipmentInfo.type} and fileinfo.equipmentid = #{equipmentInfo.id}
-                and fileinfo.fetchtime between #{equipmentInfo.startTime} and #{equipmentInfo.endTime}
+                and str_to_date(fileinfo.fetchtime,'%Y-%m-%d %H:%i') &gt;= #{equipmentInfo.startTime} and fileinfo.fetchtime &lt;= #{equipmentInfo.endTime}
         </select>
 </mapper>

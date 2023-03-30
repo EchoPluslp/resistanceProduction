@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EquipmentItemInfo {
     private Integer id;
-    private Integer type;
-    private String startTime;
-    private String endTime;
+    private String type;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }
