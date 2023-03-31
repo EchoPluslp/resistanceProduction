@@ -21,7 +21,7 @@ public class WebMvcConfig  implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // /images/**是静态映射， file:/root/images/是文件在服务器的路径
-        registry.addResourceHandler("/images/**/**.*")
+        registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:"+filePath);
     }
 }
