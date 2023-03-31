@@ -11,6 +11,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +36,9 @@ public class equipMentController {
 
     @Autowired
     private FtpConfigProperties ftpConfigProperties;
+
+    @Value("${filePath}")
+    String filePath;
 
     //获取主界面展示信息
     @RequestMapping("/getEquipmentList")
@@ -123,7 +127,7 @@ public class equipMentController {
                List<String>  ngFileNameList = ftpConfigProperties.getFileNameList(ftpClient,NGPath);
                for(int count = 0; count < ngFileNameList.size(); count++){
                    String NGFileName = ngFileNameList.get(count);
-                   ftpConfigProperties.downloadFile(ftpClient,"/"+NGPath,NGFileName,"e:/dir/"+directoryName+"/figure/NG");
+                   ftpConfigProperties.downloadFile(ftpClient,"/"+NGPath,NGFileName,filePath+directoryName+"/figure/NG");
                     //根据文件名获取创建的时间戳
                    FTPFile[] ftpFileArr = ftpClient.listFiles(NGPath+"/"+NGFileName);
                     if (ftpFileArr.length>0) {
@@ -138,7 +142,7 @@ public class equipMentController {
                List<String>  okfileNameList = ftpConfigProperties.getFileNameList(ftpClient,OKPath);
                for(int count = 0; count < okfileNameList.size(); count++){
                    String OKFileName = okfileNameList.get(count);
-                   ftpConfigProperties.downloadFile(ftpClient,"/"+OKPath,OKFileName,"e:/dir/"+directoryName+"/figure/OK");
+                   ftpConfigProperties.downloadFile(ftpClient,"/"+OKPath,OKFileName,filePath+directoryName+"/figure/OK");
                    //根据文件名获取创建的时间戳
                    FTPFile[] ftpFileArr = ftpClient.listFiles(OKPath+"/"+OKFileName);
                    if (ftpFileArr.length>0) {
@@ -153,7 +157,7 @@ public class equipMentController {
                List<String>  infoDataList =  ftpConfigProperties.getFileNameList(ftpClient,infoDataPath);
                for(int count = 0; count < infoDataList.size(); count++){
                    String infoDataPathName = infoDataList.get(count);
-                   ftpConfigProperties.downloadFile(ftpClient,"/"+infoDataPath,infoDataPathName,"e:/dir/"+directoryName+"/info");
+                   ftpConfigProperties.downloadFile(ftpClient,"/"+infoDataPath,infoDataPathName,filePath+directoryName+"/info");
                }
 
 
@@ -183,6 +187,13 @@ public class equipMentController {
         //根据设备id,良次品,起止时间,获取图片路径
         List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
         return RUtils.success(fileNameList);
+
+    }
+
+
+    @RequestMapping("/generateChart1")
+    public Result getEquipmentStatisticalChart( Integer id){
+        return RUtils.success( null);
 
     }
 
