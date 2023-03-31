@@ -2,7 +2,7 @@ package com.project.resistanceproduction.Utils;
 
 public enum NGOK {
     OK(1, "良品"),
-    NG(0, "次品"),
+    NG(2, "次品"),
     ;
     private Integer code;
     private String message;
