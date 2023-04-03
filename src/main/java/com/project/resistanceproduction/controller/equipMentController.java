@@ -271,7 +271,7 @@ public class equipMentController {
         list.add(equipmentNGValue);
         return RUtils.success(list);
         }catch (Exception e){
-            return RUtils.Err(Renum.DATA_IS_NULL.getCode(),Renum.DATA_IS_NULL.getMsg());
+            return RUtils.success(null);
 
         }finally {
             if (read != null) {
