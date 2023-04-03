@@ -48,15 +48,12 @@ public class FtpConfigProperties {
             ftpClient.setControlEncoding("UTF-8"); //
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE); // 二进制
             if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
-                System.out.println("连接FTP失败，用户名或密码错误。");
                 ftpClient.disconnect();
+                throw new Exception("连接FTP失败，用户名或密码错误！");
             } else {
                 System.out.println("FTP连接成功");
-
             }
         }catch (Exception e){
-            System.out.println("登陆FTP失败，请检查FTP相关配置信息是否正确！"+e.getMessage());
-
             return null;
         }
 
@@ -143,7 +140,7 @@ public class FtpConfigProperties {
             fos = new FileOutputStream(new File(downloadPath+File.separator+fileName));
             // 文件读取方式一
             int i;
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[102400];
             while ((i = is.read(bytes)) != -1) {
                 fos.write(bytes, 0, i);
             }

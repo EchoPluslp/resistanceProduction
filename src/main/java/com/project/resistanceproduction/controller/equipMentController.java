@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.io.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.project.resistanceproduction.Utils.NGOK.NG;
@@ -39,6 +44,9 @@ public class equipMentController {
 
     @Value("${filePath}")
     String filePath;
+
+        @Value("${filePath_dataInfo}")
+    String filePath_dataInfo;
 
     //获取主界面展示信息
     @RequestMapping("/getEquipmentList")
@@ -68,6 +76,9 @@ public class equipMentController {
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
 
         }
+        try {
+
+
         equipMent fTPInfoStatus = equipMentServiceImpl.readEquipmentInfoByid(id);
         if (fTPInfoStatus.getFtpInfoStatus()  == 1){
             fTPInfoStatus.setFtpInfoStatusInfo("已读取");
@@ -85,12 +96,16 @@ public class equipMentController {
         }
 
         return RUtils.success(fTPInfoStatus);
+        }catch (Exception e) {
+            return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+        }
     }
 
     //ftp获取文件
     //根据创建时间获取id
     @RequestMapping("/readEquipmentInfo")
     public Result getEquipmentInfo(Integer id) throws IOException {
+
         if (id == null) {
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
         }
@@ -99,6 +114,7 @@ public class equipMentController {
         if (fTPInfoStatus == null){
             return RUtils.Err(Renum.USER_NOT_EXIST.getCode(),Renum.UNKNOWN_ERROR.getMsg());
         }
+        try {
 
         FTPClient ftpClient = ftpConfigProperties.connectFtp();
         if(ftpClient == null){
@@ -157,10 +173,8 @@ public class equipMentController {
                List<String>  infoDataList =  ftpConfigProperties.getFileNameList(ftpClient,infoDataPath);
                for(int count = 0; count < infoDataList.size(); count++){
                    String infoDataPathName = infoDataList.get(count);
-                   ftpConfigProperties.downloadFile(ftpClient,"/"+infoDataPath,infoDataPathName,filePath+directoryName+"/info");
+                   ftpConfigProperties.downloadFile(ftpClient,"/"+infoDataPath,infoDataPathName,filePath+directoryName+filePath_dataInfo);
                }
-
-
                //插入数据
                equipMentServiceImpl.insertInfo(fileInfoItems);
 
@@ -176,26 +190,97 @@ public class equipMentController {
                    fTPInfoStatus.setStatusInfo(STATUS.HITCH.getMsg());
                }
 
-               return RUtils.success(fTPInfoStatus);
-           }
+                 return RUtils.success(fTPInfoStatus);
+            }
+          }
+                return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+        }catch (Exception e){
+
+                return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
         }
-        return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
     }
 
     @RequestMapping("/getEquipmentImgList")
     public Result getEquipmentInfo(@RequestBody EquipmentItemInfo equipmentInfo){
-        //根据设备id,良次品,起止时间,获取图片路径
-        List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
-        return RUtils.success(fileNameList);
+        try {
+            //根据设备id,良次品,起止时间,获取图片路径
+            List<String> fileNameList = equipMentServiceImpl.getEquipMentInfoList(equipmentInfo);
+            return RUtils.success(fileNameList);
+        }catch (Exception e) {
+            return  RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+        }
 
     }
 
 
     @RequestMapping("/generateChart1")
-    public Result getEquipmentStatisticalChart( Integer id){
-        return RUtils.success( null);
+    public Result getEquipmentStatisticalChart( @RequestBody equipmentStatisticalChart equipmentStatisticalChart) {
+        //根据传过来的日期获取专属目录下的data_info
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String chooseTimeString = format.format(equipmentStatisticalChart.getChooseTime());
+      // String chooseTimeString = equipmentStatisticalChart.getChooseTime();
+        chooseTimeString = "data"+chooseTimeString.replace("-","");
+        String infoPath = filePath+chooseTimeString+filePath_dataInfo+"//data_info.txt";
+        InputStreamReader read = null;// 编码格式必须和文件的一致
+        try {
+            read = new InputStreamReader(new FileInputStream(infoPath), "utf-8");
 
+            //一次读取一行
+        BufferedReader bufferedReader = new BufferedReader(read);
+
+        String lineTxt;
+        equipmentValue equipmentOKValue = new equipmentValue();
+        equipmentValue equipmentNGValue = new equipmentValue();
+
+        while ((lineTxt = bufferedReader.readLine()) != null) {
+            if(!lineTxt.isEmpty()){
+                //判断是否含有OK数量和NG数量
+                String[] splieTotalCountString =  lineTxt.split(":");
+
+                if (splieTotalCountString[0].trim().equals("当前检测数量")){
+                    //获得总数
+                    Integer totalCount = Integer.valueOf(splieTotalCountString[1].trim());
+                    equipmentOKValue.setCount(totalCount);
+                    equipmentNGValue.setCount(totalCount);
+                }
+                if (splieTotalCountString[0].trim().equals("OK数量")){
+                    //获得OK数量
+                    Integer okCount = Integer.valueOf(splieTotalCountString[1].trim());
+                    equipmentOKValue.setName("良品");
+                    equipmentOKValue.setItemCount(okCount);
+                    BigDecimal rateStr = new BigDecimal((float) okCount / equipmentOKValue.getCount()).setScale(3, BigDecimal.ROUND_HALF_UP);
+
+                    equipmentOKValue.setValue(rateStr.multiply(new BigDecimal(100)));
+
+                }
+                if (splieTotalCountString[0].trim().equals("NG数量")){
+                    //获得OK数量
+                    Integer ngCount = Integer.valueOf(splieTotalCountString[1].trim());
+                    equipmentNGValue.setName("次品");
+                    equipmentNGValue.setItemCount(ngCount);
+                    BigDecimal rateStr = new BigDecimal((float) ngCount / equipmentNGValue.getCount()).setScale(3, BigDecimal.ROUND_HALF_UP);
+
+                    equipmentNGValue.setValue(rateStr.multiply(new BigDecimal(100)));
+
+                }
+            }
+        }
+
+        List<equipmentValue> list = new ArrayList<>();
+        list.add(equipmentOKValue);
+        list.add(equipmentNGValue);
+        return RUtils.success(list);
+        }catch (Exception e){
+            return RUtils.Err(Renum.DATA_IS_NULL.getCode(),Renum.DATA_IS_NULL.getMsg());
+
+        }finally {
+            if (read != null) {
+                try {
+                    read.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-
-
 }
