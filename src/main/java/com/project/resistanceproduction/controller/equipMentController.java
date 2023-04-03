@@ -193,10 +193,10 @@ public class equipMentController {
                  return RUtils.success(fTPInfoStatus);
             }
           }
-                return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+                return RUtils.success(null);
         }catch (Exception e){
 
-                return RUtils.Err(Renum.UNKNOWN_ERROR.getCode(),Renum.UNKNOWN_ERROR.getMsg());
+            return RUtils.success(null);
         }
     }
 

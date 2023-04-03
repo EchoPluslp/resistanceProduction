@@ -170,7 +170,7 @@ public class productLineController {
             Process p = new ProcessBuilder(cluster_bds_path).start();
 
             //等待3秒,模拟后端实现
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(4);
 
             return RUtils.success(null);
 
